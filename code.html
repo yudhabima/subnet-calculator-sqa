@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><title>SubnetCraft Edu - IPv4 &amp; VLSM Calculator Lab</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Roboto+Flex:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"tertiary":"#bb1712","primary-fixed":"#d8e2ff","on-secondary-container":"#00722d","secondary-fixed-dim":"#7adb87","inverse-surface":"#2f3033","error-container":"#ffdad6","on-surface-variant":"#414754","on-surface":"#1a1b1e","on-primary-container":"#ffffff","background":"#faf9fd","surface":"#faf9fd","on-background":"#1a1b1e","surface-container-highest":"#e3e2e6","tertiary-fixed":"#ffdad5","on-primary-fixed-variant":"#004493","inverse-primary":"#adc7ff","surface-container-low":"#f4f3f7","on-secondary":"#ffffff","secondary":"#006e2b","on-tertiary-fixed":"#410001","on-primary-fixed":"#001a41","surface-container":"#efedf1","on-tertiary-fixed-variant":"#930004","on-primary":"#ffffff","error":"#ba1a1a","inverse-on-surface":"#f1f0f4","surface-container-lowest":"#ffffff","secondary-container":"#93f59e","surface-bright":"#faf9fd","on-tertiary":"#ffffff","outline-variant":"#c1c6d6","on-secondary-fixed-variant":"#00531f","on-error-container":"#93000a","surface-variant":"#e3e2e6","primary-container":"#1a73e8","on-tertiary-container":"#ffffff","on-secondary-fixed":"#002108","surface-container-high":"#e9e7eb","primary-fixed-dim":"#adc7ff","tertiary-container":"#df3429","surface-dim":"#dbd9dd","tertiary-fixed-dim":"#ffb4a9","surface-tint":"#005bc0","secondary-fixed":"#96f8a1","primary":"#005bbf","on-error":"#ffffff","outline":"#727785"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"space-xs":"0.25rem","space-lg":"1.5rem","margin-sm":"1rem","space-xl":"2.5rem","space-sm":"0.5rem","margin":"2rem","gutter-sm":"1rem","space-md":"1rem","gutter":"1.5rem"},fontFamily:{"label-lg":["Roboto Flex"],"display-lg-mobile":["Roboto Flex"],"label-md":["Roboto Flex"],"headline-lg":["Roboto Flex"],"headline-lg-mobile":["Roboto Flex"],"body-md":["Roboto Flex"],"body-lg":["Roboto Flex"],"display-lg":["Roboto Flex"],"code-md":["JetBrains Mono"],"headline-sm":["Roboto Flex"],"body-sm":["Roboto Flex"],"headline-md":["Roboto Flex"]},fontSize:{"label-lg":["0.875rem",{"lineHeight":"1.25rem","letterSpacing":"0.015em","fontWeight":"500"}],"display-lg-mobile":["2.25rem",{"lineHeight":"2.75rem","letterSpacing":"-0.015em","fontWeight":"600"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.025em","fontWeight":"500"}],"headline-lg":["2rem",{"lineHeight":"2.5rem","letterSpacing":"-0.01em","fontWeight":"500"}],"headline-lg-mobile":["1.5rem",{"lineHeight":"2rem","letterSpacing":"0","fontWeight":"500"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","letterSpacing":"0.01em","fontWeight":"400"}],"body-lg":["1rem",{"lineHeight":"1.5rem","letterSpacing":"0.01em","fontWeight":"400"}],"display-lg":["3.5rem",{"lineHeight":"4rem","letterSpacing":"-0.02em","fontWeight":"600"}],"code-md":["0.8125rem",{"lineHeight":"1.25rem","letterSpacing":"0","fontWeight":"400"}],"headline-sm":["1.125rem",{"lineHeight":"1.5rem","letterSpacing":"0","fontWeight":"500"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","letterSpacing":"0.02em","fontWeight":"400"}],"headline-md":["1.375rem",{"lineHeight":"1.75rem","letterSpacing":"0","fontWeight":"500"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased min-h-screen flex flex-col"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 max-w-[1440px] mx-auto px-gutter flex items-center justify-between gap-space-lg"><div class="flex items-center gap-space-lg shrink-0"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shadow-sm"><span class="material-symbols-outlined text-[22px]">hub</span></div><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-on-surface leading-tight font-semibold tracking-tight">SubnetCraft Edu</span><span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Networking Vocational Lab Suite</span></div></div><nav class="hidden xl:flex items-center gap-space-xs ml-space-md" data-active-classes="bg-surface-container-high text-primary font-semibold"><a aria-current="page" class="px-space-md py-space-sm rounded-lg transition-colors bg-surface-container-high text-primary font-semibold" data-path="calculator-lab" href="#">Calculator Lab</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="vlsm-matrix-planner" href="#">VLSM Matrix Planner</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="subnetting-curriculum" href="#">Subnetting Curriculum</a><a class="px-space-md py-space-sm rounded-lg font-label-lg text-label-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="practice-exercises" href="#">Practice Exercises</a></nav></div><div class="flex items-center gap-space-sm shrink-0"><div class="flex items-center bg-surface-container rounded-full p-space-xs px-space-sm gap-space-xs"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">cast_for_education</span><span class="font-label-md text-label-md text-on-surface-variant select-none">Classroom Mode</span><button aria-checked="false" class="w-8 h-4 bg-outline-variant rounded-full relative p-0.5 transition-colors focus:outline-none" role="switch" type="button"><span class="block w-3 h-3 bg-surface-container-lowest rounded-full shadow-sm transition-transform"></span></button></div><a class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#" title="Lab Documentation"><span class="material-symbols-outlined text-[20px]">menu_book</span></a><button class="w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container hover:text-on-surface relative transition-colors" title="Notifications" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error"></span></button><div class="h-6 w-px bg-outline-variant mx-space-xs"></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="text-right hidden sm:block"><div class="font-label-md text-label-md text-on-surface leading-tight">Prof. H. Vance</div><div class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Lead Instructor</div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm ring-2 ring-surface-container-lowest"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><main class="flex-1 w-full pt-16 bg-surface"><div class="max-w-[1440px] mx-auto px-gutter py-space-lg"><div class="flex flex-col w-full">
+<!-- Content Header & Curriculum Context -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between pb-space-md gap-space-md">
+<div class="flex flex-col gap-1">
+<nav aria-label="Breadcrumb" class="flex items-center gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<span class="hover:text-primary transition-colors cursor-pointer">Kurikulum SMK TKJ 2024</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Konsentrasi Jaringan Komputer &amp; Telekomunikasi</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-on-surface font-semibold">Modul 04: Pengalamatan IPv4 &amp; VLSM Praktikum</span>
+</nav>
+<div class="flex items-center gap-space-sm pt-0.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-semibold">Fase F (Kelas XI - XII)</span>
+<span class="text-on-surface-variant font-body-sm text-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+          Standar Uji Kompetensi Keahlian (UKK) &amp; CCNA v7
+        </span>
+</div>
+</div>
+<!-- Pedagogical State Inspector Toolbar -->
+<div class="flex items-center bg-surface-container rounded-lg p-1 gap-1 shadow-sm shrink-0">
+<span class="font-label-md text-label-md text-on-surface-variant px-2 select-none flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+        Simulasi Status:
+      </span>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md font-semibold bg-surface-container-lowest text-primary shadow-sm transition-all flex items-center gap-1" id="btn-state-success" onclick="switchPedagogicalState('success')" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+        Kalkulasi Aktif
+      </button>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center gap-1" id="btn-state-empty" onclick="switchPedagogicalState('empty')" type="button">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+        Status Kosong
+      </button>
+<button class="px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center gap-1" id="btn-state-error" onclick="switchPedagogicalState('error')" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+        Galat Validasi (Error)
+      </button>
+</div>
+</div>
+<!-- Classroom Quick Preset Strip -->
+<div class="flex items-center gap-space-sm py-2 overflow-x-auto no-scrollbar">
+<span class="text-on-surface-variant font-label-md text-label-md shrink-0 flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">bookmark_manager</span>
+      Preset Soal Praktik:
+    </span>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-md font-label-md rounded-full shadow-sm flex items-center gap-1.5 transition-colors shrink-0" onclick="loadPreset('192.168.10.45', 24)" type="button">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+      Lab TKJ 1 (192.168.10.45/24)
+    </button>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-md font-label-md rounded-full shadow-sm flex items-center gap-1.5 transition-colors shrink-0" onclick="loadPreset('10.20.0.1', 21)" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+      Server Farm Sekolah (10.20.0.1/21)
+    </button>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-md font-label-md rounded-full shadow-sm flex items-center gap-1.5 transition-colors shrink-0" onclick="loadPreset('172.16.50.9', 30)" type="button">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+      Point-to-Point WAN Serial (/30)
+    </button>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-md font-label-md rounded-full shadow-sm flex items-center gap-1.5 transition-colors shrink-0" onclick="loadPreset('192.168.1.1', 26)" type="button">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+      Subnetting UKK Mandiri (/26)
+    </button>
+<button class="px-3 py-1 bg-surface-container-lowest hover:bg-surface-container-high text-on-surface text-label-md font-label-md rounded-full shadow-sm flex items-center gap-1.5 transition-colors shrink-0" onclick="loadPreset('10.0.0.1', 8)" type="button">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+      Default Class A (/8)
+    </button>
+</div>
+<!-- Primary Tab Selector (Clean Material Indicator) -->
+<div class="flex items-center justify-between mt-space-sm mb-space-lg bg-surface-container-lowest p-1 rounded-xl shadow-sm">
+<div class="flex items-center gap-2">
+<button class="px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold bg-primary text-on-primary shadow-sm flex items-center gap-2 transition-all" id="tab-calculator" onclick="switchLabTab('calculator')" type="button">
+<span class="material-symbols-outlined text-[20px]">calculate</span>
+        Subnet Calculator (FLSM)
+      </button>
+<button class="px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-2" id="tab-vlsm" onclick="switchLabTab('vlsm')" type="button">
+<span class="material-symbols-outlined text-[20px]">table_rows</span>
+        VLSM Matrix Planner
+        <span class="px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-md text-label-md">Interaktif</span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm pr-3">
+<span class="font-code-md text-code-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px] text-primary">terminal</span>
+        RFC 1878 CIDR Table
+      </span>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-md text-label-md px-2 py-1 rounded bg-surface-container hover:bg-surface-container-high" onclick="copyFullReport()" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span> Salin Ringkasan
+      </button>
+</div>
+</div>
+<!-- TAB VIEW 1: Subnet Calculator (FLSM) -->
+<div class="w-full flex flex-col gap-space-lg" id="view-calculator">
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Parameter Input Workspace (approx 420px on desktop) -->
+<div class="xl:col-span-4 flex flex-col gap-space-md">
+<!-- Parameter Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-2">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Parameter Subnet</h2>
+</div>
+<span class="text-body-sm font-code-md text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">IPv4 32-bit</span>
+</div>
+<!-- IP Address Input -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<label class="font-label-lg text-label-lg font-medium text-on-surface flex items-center gap-1" for="input-ip">
+                Alamat IPv4 (Dotted-Decimal)
+                <span class="text-tertiary">*</span>
+</label>
+<button class="text-primary hover:underline font-label-md text-label-md" onclick="document.getElementById('input-ip').value='192.168.10.45'; recalculateSubnet();" type="button">Default</button>
+</div>
+<div class="relative flex items-center">
+<span class="absolute left-3.5 text-on-surface-variant material-symbols-outlined text-[20px]">lan</span>
+<input class="w-full h-12 pl-10 pr-10 bg-surface-container-lowest rounded-lg font-code-md text-body-lg text-on-surface shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all" id="input-ip" oninput="handleIpInput(this.value)" placeholder="Contoh: 192.168.1.1" type="text" value="192.168.10.45"/>
+<button class="absolute right-3 text-on-surface-variant hover:text-on-surface" onclick="clearIpInput()" title="Bersihkan input" type="button">
+<span class="material-symbols-outlined text-[18px]">cancel</span>
+</button>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Format 4 oktet desimal (0-255 dipisahkan tanda titik).</p>
+</div>
+<!-- Prefix Length / CIDR Stepper + Slider -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<label class="font-label-lg text-label-lg font-medium text-on-surface" for="input-prefix">
+                Panjang Prefiks CIDR (Subnet Mask)
+              </label>
+<span class="font-code-md text-body-lg font-bold text-primary bg-primary-fixed px-2.5 py-0.5 rounded" id="prefix-badge">
+                /24
+              </span>
+</div>
+<div class="flex items-center gap-3">
+<input class="w-full accent-primary h-2 bg-surface-container-highest rounded-lg cursor-pointer" id="input-range-prefix" max="32" min="0" oninput="handlePrefixChange(this.value)" type="range" value="24"/>
+<div class="flex items-center bg-surface-container rounded-lg p-0.5">
+<button class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-lowest rounded transition-colors font-bold" onclick="stepPrefix(-1)" type="button">-</button>
+<span class="w-8 text-center font-code-md text-label-lg font-semibold text-on-surface" id="prefix-display">24</span>
+<button class="w-7 h-7 flex items-center justify-center text-on-surface hover:bg-surface-container-lowest rounded transition-colors font-bold" onclick="stepPrefix(1)" type="button">+</button>
+</div>
+</div>
+<!-- Quick Prefix Buttons (Vocational Standard Exam Prefixes) -->
+<div class="flex flex-col gap-1.5 pt-1">
+<span class="font-label-md text-label-md text-on-surface-variant">Prefiks Uji Laboratorium Sering Digunakan:</span>
+<div class="grid grid-cols-6 gap-1.5">
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(24)" type="button">/24</button>
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(26)" type="button">/26</button>
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(27)" type="button">/27</button>
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(28)" type="button">/28</button>
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(29)" type="button">/29</button>
+<button class="py-1.5 rounded bg-surface-container hover:bg-primary hover:text-on-primary font-code-md text-label-md font-semibold text-on-surface transition-all text-center" onclick="handlePrefixChange(30)" type="button">/30</button>
+</div>
+</div>
+</div>
+<!-- Error Alert Banner (Hidden by default, displayed on error state) -->
+<div class="hidden rounded-lg p-3 bg-error-container text-on-error-container shadow-sm flex-col gap-1" id="error-alert-box">
+<div class="flex items-center gap-2 font-label-lg text-label-lg font-semibold">
+<span class="material-symbols-outlined text-[20px] text-tertiary">error</span>
+              Kesalahan Sintaks Oktet IPv4
+            </div>
+<p class="font-body-sm text-body-sm text-on-error-container pl-7" id="error-alert-msg">
+              Oktet ke-3 (312) melampaui batas representasi 8-bit desimal yang valid (0 - 255).
+            </p>
+</div>
+<!-- Action Buttons -->
+<div class="flex items-center gap-space-sm pt-2">
+<button class="flex-1 h-12 bg-primary hover:bg-on-primary-fixed-variant text-on-primary rounded-lg font-label-lg text-label-lg font-semibold shadow-sm flex items-center justify-center gap-2 transition-all" onclick="recalculateSubnet()" type="button">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+              Hitung Subnet
+              <span class="font-code-md text-body-sm opacity-75 hidden sm:inline">[Enter]</span>
+</button>
+<button class="h-12 px-4 bg-surface-container hover:bg-surface-container-high text-on-surface rounded-lg font-label-lg text-label-lg font-medium transition-colors flex items-center justify-center gap-1" onclick="resetCalculatorForm()" title="Reset ke Default" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+              Reset
+            </button>
+</div>
+</div>
+<!-- Instructor Quick Cheat Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg font-semibold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[18px] text-primary">psychology</span>
+              Rumus Pokok Ujian Teori TKJ
+            </span>
+<span class="text-body-sm font-label-md text-on-surface-variant">RFC 791</span>
+</div>
+<div class="bg-surface-container p-2.5 rounded-lg flex flex-col gap-1 font-body-sm text-body-sm text-on-surface">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Jumlah Subnet:</span>
+<span class="font-code-md font-semibold text-primary">2<sup>n</sup> <span class="text-body-sm text-on-surface-variant font-normal">(n = bit subnet dipinjam)</span></span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Jumlah Host Valid:</span>
+<span class="font-code-md font-semibold text-secondary">2<sup>h</sup> - 2 <span class="text-body-sm text-on-surface-variant font-normal">(h = bit sisa host)</span></span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Blok Subnet (Kelipatan):</span>
+<span class="font-code-md font-semibold text-on-surface">256 - Nilai Oktet Mask</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Calculated Architecture & Results Dashboard (xl:col-span-8) -->
+<div class="xl:col-span-8 flex flex-col gap-space-md">
+<!-- STATE 1: SUCCESS / CALCULATED VIEW -->
+<div class="flex flex-col gap-space-md" id="panel-success-view">
+<!-- Summary Header Badges -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-xl bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface leading-tight" id="res-header-cidr">192.168.10.45/24</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant leading-tight">Segmentasi Jaringan Aktif Sesuai Analisis FLSM</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-1 rounded-full bg-primary-fixed text-on-primary-fixed font-label-md text-label-md font-semibold flex items-center gap-1" id="badge-class">
+<span class="material-symbols-outlined text-[14px]">category</span>
+                Kelas C (RFC 1918 Private)
+              </span>
+<span class="px-2.5 py-1 rounded-full bg-surface-container-highest text-on-surface font-label-md text-label-md font-semibold flex items-center gap-1" id="badge-capacity">
+<span class="material-symbols-outlined text-[14px]">devices</span>
+                Kapasitas: 254 Host Valid
+              </span>
+<span class="px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-label-md font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">hub</span>
+                1 Broadcast Domain
+              </span>
+</div>
+</div>
+<!-- 32-Bit Pedagogical Binary Allocation Visualizer -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-semibold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">find_replace</span>
+                  Peta Visual Alokasi 32-Bit (Network vs Host)
+                </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Memvisualisasikan pembagian batas bit (Boundary) antara porsi Network ID dan porsi Host ID.</p>
+</div>
+<div class="flex items-center gap-3 font-label-md text-label-md">
+<span class="flex items-center gap-1 text-primary font-semibold">
+<span class="w-3 h-3 rounded bg-primary"></span> Bit Jaringan (<span id="net-bit-count">24</span> bit)
+                </span>
+<span class="flex items-center gap-1 text-secondary font-semibold">
+<span class="w-3 h-3 rounded bg-secondary"></span> Bit Host (<span id="host-bit-count">8</span> bit)
+                </span>
+</div>
+</div>
+<!-- Bit Grid Visualizer (4 Octets) -->
+<div class="bg-surface-container p-space-md rounded-xl flex flex-col gap-3">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-2 text-center">
+<!-- Oktet 1 -->
+<div class="flex flex-col bg-surface-container-lowest p-2.5 rounded-lg shadow-sm">
+<div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant pb-1">
+<span>Oktet 1</span>
+<span class="font-code-md font-bold text-on-surface" id="oct1-dec">192</span>
+</div>
+<div class="font-code-md text-label-lg font-semibold tracking-widest text-primary py-1" id="oct1-bin">
+                    11000000
+                  </div>
+<div class="text-body-sm font-label-md text-primary font-medium">8 Bit Jaringan</div>
+</div>
+<!-- Oktet 2 -->
+<div class="flex flex-col bg-surface-container-lowest p-2.5 rounded-lg shadow-sm">
+<div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant pb-1">
+<span>Oktet 2</span>
+<span class="font-code-md font-bold text-on-surface" id="oct2-dec">168</span>
+</div>
+<div class="font-code-md text-label-lg font-semibold tracking-widest text-primary py-1" id="oct2-bin">
+                    10101000
+                  </div>
+<div class="text-body-sm font-label-md text-primary font-medium">8 Bit Jaringan</div>
+</div>
+<!-- Oktet 3 -->
+<div class="flex flex-col bg-surface-container-lowest p-2.5 rounded-lg shadow-sm">
+<div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant pb-1">
+<span>Oktet 3</span>
+<span class="font-code-md font-bold text-on-surface" id="oct3-dec">10</span>
+</div>
+<div class="font-code-md text-label-lg font-semibold tracking-widest text-primary py-1" id="oct3-bin">
+                    00001010
+                  </div>
+<div class="text-body-sm font-label-md text-primary font-medium">8 Bit Jaringan</div>
+</div>
+<!-- Oktet 4 (Partitioned) -->
+<div class="flex flex-col bg-surface-container-lowest p-2.5 rounded-lg shadow-sm">
+<div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant pb-1">
+<span>Oktet 4</span>
+<span class="font-code-md font-bold text-on-surface" id="oct4-dec">45</span>
+</div>
+<div class="font-code-md text-label-lg font-semibold tracking-widest text-secondary py-1" id="oct4-bin">
+                    00101101
+                  </div>
+<div class="text-body-sm font-label-md text-secondary font-medium" id="oct4-label">8 Bit Host</div>
+</div>
+</div>
+<!-- Binary Subnet Mask Indicator Bar -->
+<div class="flex flex-col gap-1 pt-1">
+<div class="flex items-center justify-between text-label-md font-label-md text-on-surface-variant">
+<span>Subnet Mask Biner Representasi:</span>
+<span class="font-code-md font-semibold text-on-surface" id="mask-bin-repr">11111111.11111111.11111111.00000000</span>
+</div>
+<!-- Dynamic progress width showing network proportion -->
+<div class="w-full h-3 bg-secondary-fixed rounded-full overflow-hidden flex shadow-inner">
+<div class="h-full bg-primary transition-all duration-300" id="mask-bar-network" style="width: 75%;"></div>
+<div class="h-full bg-secondary transition-all duration-300" id="mask-bar-host" style="width: 25%;"></div>
+</div>
+<div class="flex justify-between font-label-md text-label-md text-on-surface-variant">
+<span>MSB (Bit Paling Signifikan / Network)</span>
+<span>LSB (Bit Host Sisa)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Metrics Grid Cards (6 Cards with Copy Icons) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- Metric 1: Network ID -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Network ID (Alamat Jaringan)</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-network-id')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-on-surface" id="res-network-id">192.168.10.0</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Identitas rute routing table</span>
+</div>
+</div>
+<!-- Metric 2: Usable Host Range -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Rentang Host Valid</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-host-range')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-primary" id="res-host-range">192.168.10.1 - .254</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Alokasi PC klien, printer &amp; server</span>
+</div>
+</div>
+<!-- Metric 3: Broadcast Address -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Broadcast Address</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-broadcast')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-tertiary" id="res-broadcast">192.168.10.255</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pesan serentak seluruh subnet</span>
+</div>
+</div>
+<!-- Metric 4: Subnet Mask -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Subnet Mask (Netmask)</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-mask')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-on-surface" id="res-mask">255.255.255.0</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Pemisah bit network dan host</span>
+</div>
+</div>
+<!-- Metric 5: Wildcard Mask (Cisco ACL) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Wildcard Mask (Invers)</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-wildcard')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-secondary" id="res-wildcard">0.0.0.255</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Konfigurasi OSPF &amp; Cisco ACL</span>
+</div>
+</div>
+<!-- Metric 6: Total Usable Host Capacity -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-medium text-on-surface-variant">Kapasitas Maks Host</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1 rounded hover:bg-surface-container" onclick="copyCardValue('res-total-hosts')" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+</button>
+</div>
+<div>
+<div class="font-code-md text-headline-sm font-bold text-on-surface" id="res-total-hosts">254 Host</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Total address: 256 (dikurangi 2)</span>
+</div>
+</div>
+</div>
+<!-- Vocational Instructor & Student Callout Card -->
+<div class="rounded-xl p-space-md bg-primary-fixed/20 shadow-sm flex items-start gap-space-md">
+<div class="w-9 h-9 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">school</span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
+                Catatan Guru Kejuruan (Instruktur UKK): Aturan Penetapan Alamat Default Gateway
+              </h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Pada standar Cisco Packet Tracer dan Uji Sertifikasi BNSP TKJ, alamat <strong>Usable Host Pertama (<span class="font-code-md text-primary">192.168.10.1</span>)</strong> umumnya dialokasikan sebagai <em>Interface Router (Default Gateway)</em>. Alamat <strong>Network ID (.0)</strong> dan <strong>Broadcast (.255)</strong> secara mutlak <u>TIDAK BOLEH</u> dipasang pada NIC komputer klien karena dilindungi oleh standar RFC 1122.
+              </p>
+</div>
+</div>
+</div>
+<!-- STATE 2: EMPTY STATE VIEW (Hidden unless selected in toolbar) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex-col items-center justify-center text-center gap-space-md min-h-[460px]" id="panel-empty-view">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[44px]">radar</span>
+</div>
+<div class="max-w-md flex flex-col gap-2">
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Belum Ada Perhitungan Subnet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Masukkan alamat IP dan pilih prefiks CIDR pada panel sebelah kiri, kemudian tekan tombol <strong>"Hitung Subnet"</strong> atau klik salah satu preset laboratorium di atas.
+            </p>
+</div>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg font-semibold flex items-center gap-2 shadow-sm hover:bg-on-primary-fixed-variant transition-colors" onclick="loadPreset('192.168.10.45', 24); switchPedagogicalState('success');" type="button">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+            Muat Contoh Lab TKJ (/24)
+          </button>
+</div>
+<!-- STATE 3: ERROR STATE VIEW (Hidden unless selected in toolbar) -->
+<div class="hidden bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex-col items-center justify-center text-center gap-space-md min-h-[460px]" id="panel-error-view">
+<div class="w-20 h-20 rounded-full bg-error-container flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[44px]">warning_amber</span>
+</div>
+<div class="max-w-md flex flex-col gap-2">
+<h3 class="font-headline-md text-headline-md font-semibold text-tertiary">Format IPv4 Tidak Sesuai Standar</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+              Sistem mendeteksi nilai oktet melebihi batas 8-bit (<span class="font-code-md text-tertiary font-bold">192.168.312.45</span>). Dalam notasi desimal bertitik, setiap oktet dibatasi dari nilai desimal 0 hingga 255.
+            </p>
+</div>
+<div class="bg-surface-container p-3 rounded-lg text-left font-code-md text-body-sm text-on-surface w-full max-w-sm">
+<div class="text-tertiary font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">close</span> Oktet 3: 312 &gt; 255 (Overflow 8-bit)</div>
+<div class="text-secondary font-bold flex items-center gap-1 pt-1"><span class="material-symbols-outlined text-[16px]">check</span> Solusi: Gunakan rentang antara 0 s.d 255</div>
+</div>
+<button class="px-5 py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-lg text-label-lg font-semibold flex items-center gap-2 transition-colors" onclick="resetCalculatorForm(); switchPedagogicalState('success');" type="button">
+<span class="material-symbols-outlined text-[18px]">restore</span>
+            Kembalikan ke Nilai Valid
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB VIEW 2: VLSM Matrix Planner (Toggleable Panel) -->
+<div class="hidden w-full flex-col gap-space-lg" id="view-vlsm">
+<!-- VLSM Master Configuration Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between pb-2 gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-[24px] text-primary">account_tree</span>
+            VLSM Subnet Allocation Matrix Planner
+          </h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Perancangan pengalamatan Variable Length Subnet Masking berbasis efisiensi kebutuhan kuota host untuk jaringan infrastruktur sekolah.
+          </p>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="px-3.5 py-2 rounded-lg bg-primary-fixed text-on-primary-fixed font-label-lg text-label-lg font-semibold hover:bg-primary hover:text-on-primary transition-all flex items-center gap-1.5 shadow-sm" onclick="addVlsmRow()" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+            Tambah Kebutuhan Lab
+          </button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg font-semibold hover:bg-on-primary-fixed-variant transition-all flex items-center gap-1.5 shadow-sm" onclick="recalculateVlsm()" type="button">
+<span class="material-symbols-outlined text-[18px]">autorenew</span>
+            Urutkan &amp; Alokasikan (Descending)
+          </button>
+</div>
+</div>
+<!-- VLSM Master Network Input Bar -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md bg-surface-container p-space-md rounded-xl">
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md font-medium text-on-surface-variant">Major Network ID (Alokasi ISP / Yayasan)</label>
+<input class="h-10 px-3 bg-surface-container-lowest rounded-lg font-code-md text-body-md text-on-surface shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" id="vlsm-major-ip" type="text" value="192.168.1.0"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label-md text-label-md font-medium text-on-surface-variant">Major CIDR Prefix</label>
+<select class="h-10 px-3 bg-surface-container-lowest rounded-lg font-code-md text-body-md text-on-surface shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" id="vlsm-major-cidr">
+<option selected="" value="24">/24 (256 Alamat IP Total)</option>
+<option value="23">/23 (512 Alamat IP Total)</option>
+<option value="22">/22 (1024 Alamat IP Total)</option>
+<option value="21">/21 (2048 Alamat IP Total)</option>
+</select>
+</div>
+<div class="flex flex-col justify-end">
+<div class="flex items-center justify-between text-label-md font-label-md pb-1 text-on-surface-variant">
+<span>Efisiensi Alokasi Ruang:</span>
+<span class="font-code-md font-bold text-secondary">196 / 256 IP Digunakan (76.5%)</span>
+</div>
+<div class="w-full h-3 bg-surface-container-highest rounded-full overflow-hidden flex shadow-inner">
+<div class="h-full bg-primary" style="width: 42%;" title="Lab TKJ 1: 64 IP"></div>
+<div class="h-full bg-secondary" style="width: 22%;" title="Lab TKJ 2: 32 IP"></div>
+<div class="h-full bg-tertiary-container" style="width: 10%;" title="Ruang Guru: 16 IP"></div>
+<div class="h-full bg-on-secondary-container" style="width: 2.5%;" title="Link WAN: 4 IP"></div>
+<div class="h-full bg-outline-variant" style="width: 23.5%;" title="Sisa Unallocated"></div>
+</div>
+</div>
+</div>
+<!-- VLSM Interactive Table -->
+<div class="overflow-x-auto rounded-xl shadow-sm">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container text-on-surface-variant font-label-md text-label-md">
+<tr>
+<th class="py-3 px-4">Nama Subnet / Divisi</th>
+<th class="py-3 px-4">Kebutuhan Host</th>
+<th class="py-3 px-4">Alokasi Prefiks</th>
+<th class="py-3 px-4">Alamat Network ID</th>
+<th class="py-3 px-4">Subnet Mask</th>
+<th class="py-3 px-4">Rentang Host Valid</th>
+<th class="py-3 px-4">Broadcast Address</th>
+<th class="py-3 px-4 text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest bg-surface-container-lowest font-code-md text-body-sm text-on-surface">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-3 px-4 font-body-sm font-semibold flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                Lab Jaringan Komputer 1
+              </td>
+<td class="py-3 px-4 font-semibold">60 Host</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-fixed text-primary font-bold">/26</span> (62 Usable)</td>
+<td class="py-3 px-4 font-bold">192.168.1.0</td>
+<td class="py-3 px-4 text-on-surface-variant">255.255.255.192</td>
+<td class="py-3 px-4 text-primary">192.168.1.1 - 192.168.1.62</td>
+<td class="py-3 px-4 text-tertiary">192.168.1.63</td>
+<td class="py-3 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-medium">Optimal</span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-3 px-4 font-body-sm font-semibold flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                Lab Jaringan Komputer 2
+              </td>
+<td class="py-3 px-4 font-semibold">28 Host</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-secondary-fixed text-secondary font-bold">/27</span> (30 Usable)</td>
+<td class="py-3 px-4 font-bold">192.168.1.64</td>
+<td class="py-3 px-4 text-on-surface-variant">255.255.255.224</td>
+<td class="py-3 px-4 text-primary">192.168.1.65 - 192.168.1.94</td>
+<td class="py-3 px-4 text-tertiary">192.168.1.95</td>
+<td class="py-3 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-medium">Optimal</span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-3 px-4 font-body-sm font-semibold flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></span>
+                Ruang Guru &amp; Tata Usaha
+              </td>
+<td class="py-3 px-4 font-semibold">12 Host</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-tertiary-fixed text-tertiary font-bold">/28</span> (14 Usable)</td>
+<td class="py-3 px-4 font-bold">192.168.1.96</td>
+<td class="py-3 px-4 text-on-surface-variant">255.255.255.240</td>
+<td class="py-3 px-4 text-primary">192.168.1.97 - 192.168.1.110</td>
+<td class="py-3 px-4 text-tertiary">192.168.1.111</td>
+<td class="py-3 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-medium">Optimal</span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-3 px-4 font-body-sm font-semibold flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-on-secondary-container"></span>
+                PTP WAN Router Gateway
+              </td>
+<td class="py-3 px-4 font-semibold">2 Host</td>
+<td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-primary-fixed text-primary font-bold">/30</span> (2 Usable)</td>
+<td class="py-3 px-4 font-bold">192.168.1.112</td>
+<td class="py-3 px-4 text-on-surface-variant">255.255.255.252</td>
+<td class="py-3 px-4 text-primary">192.168.1.113 - 192.168.1.114</td>
+<td class="py-3 px-4 text-tertiary">192.168.1.115</td>
+<td class="py-3 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-medium">100% Pas</span>
+</td>
+</tr>
+<!-- Unallocated Row -->
+<tr class="bg-surface-container/30">
+<td class="py-3 px-4 font-body-sm font-semibold text-on-surface-variant flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline-variant"></span>
+                Ruang Cadangan (Unallocated)
+              </td>
+<td class="py-3 px-4 text-on-surface-variant">Sisa Ruang</td>
+<td class="py-3 px-4 text-on-surface-variant">Tersedia 140 IP</td>
+<td class="py-3 px-4 font-bold text-on-surface-variant">192.168.1.116</td>
+<td class="py-3 px-4 text-on-surface-variant">-</td>
+<td class="py-3 px-4 text-on-surface-variant">192.168.1.116 - 192.168.1.255</td>
+<td class="py-3 px-4 text-on-surface-variant">192.168.1.255</td>
+<td class="py-3 px-4 text-center">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-md font-medium">Bebas</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pedagogical VLSM Step Summary Alert -->
+<div class="p-3.5 bg-surface-container rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-[20px] text-primary shrink-0 mt-0.5">tips_and_updates</span>
+<div class="flex flex-col gap-0.5 font-body-sm text-body-sm">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Prinsip Algoritma VLSM untuk Siswa:</span>
+<span class="text-on-surface-variant">
+            Selalu urutkan daftar kebutuhan segmen jaringan dari jumlah host <strong>terbesar ke terkecil</strong> sebelum membagi blok CIDR. Menghitung segmen kecil terlebih dahulu akan menimbulkan fragmentasi alamat IP (overlapping) yang menyulitkan perutean summarization.
+          </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Notification Toast Container (Dynamic micro-interactions) -->
+<div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface px-4 py-2.5 rounded-xl shadow-xl font-label-md text-label-md flex items-center gap-2 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none z-50" id="toast-notify">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">check_circle</span>
+<span id="toast-msg">Nilai berhasil disalin ke papan klip!</span>
+</div>
+</div>
+<script>
+  let currentIp = "192.168.10.45";
+  let currentPrefix = 24;
+
+  function ipToLong(ip) {
+    return ip.split('.').reduce((acc, oct) => (acc << 8) + parseInt(oct, 10), 0) >>> 0;
+  }
+
+  function longToIp(long) {
+    return [
+      (long >>> 24) & 255,
+      (long >>> 16) & 255,
+      (long >>> 8) & 255,
+      long & 255
+    ].join('.');
+  }
+
+  function getDecToBin8(val) {
+    return (val >>> 0).toString(2).padStart(8, '0');
+  }
+
+  function validateIpv4(ip) {
+    const parts = ip.trim().split('.');
+    if (parts.length !== 4) return false;
+    for (let i = 0; i < 4; i++) {
+      const part = parts[i];
+      if (!/^\d+$/.test(part)) return false;
+      const num = parseInt(part, 10);
+      if (num < 0 || num > 255) return false;
+    }
+    return true;
+  }
+
+  function handleIpInput(val) {
+    currentIp = val;
+    if (validateIpv4(val)) {
+      hideErrorAlert();
+      recalculateSubnet();
+    } else {
+      showErrorAlert('Format alamat IPv4 tidak valid. Harus 4 oktet desimal (0-255).');
+    }
+  }
+
+  function handlePrefixChange(val) {
+    const p = parseInt(val, 10);
+    currentPrefix = p;
+    document.getElementById('input-range-prefix').value = p;
+    document.getElementById('prefix-display').textContent = p;
+    document.getElementById('prefix-badge').textContent = '/' + p;
+    recalculateSubnet();
+  }
+
+  function stepPrefix(step) {
+    let p = currentPrefix + step;
+    if (p < 0) p = 0;
+    if (p > 32) p = 32;
+    handlePrefixChange(p);
+  }
+
+  function clearIpInput() {
+    document.getElementById('input-ip').value = '';
+    currentIp = '';
+    switchPedagogicalState('empty');
+  }
+
+  function showErrorAlert(msg) {
+    const box = document.getElementById('error-alert-box');
+    const msgEl = document.getElementById('error-alert-msg');
+    if (box && msgEl) {
+      msgEl.textContent = msg;
+      box.classList.remove('hidden');
+      box.classList.add('flex');
+    }
+  }
+
+  function hideErrorAlert() {
+    const box = document.getElementById('error-alert-box');
+    if (box) {
+      box.classList.add('hidden');
+      box.classList.remove('flex');
+    }
+  }
+
+  function loadPreset(ip, prefix) {
+    currentIp = ip;
+    currentPrefix = prefix;
+    document.getElementById('input-ip').value = ip;
+    document.getElementById('input-range-prefix').value = prefix;
+    document.getElementById('prefix-display').textContent = prefix;
+    document.getElementById('prefix-badge').textContent = '/' + prefix;
+    hideErrorAlert();
+    switchPedagogicalState('success');
+    recalculateSubnet();
+    showToast(`Preset dimuat: ${ip}/${prefix}`);
+  }
+
+  function resetCalculatorForm() {
+    loadPreset('192.168.10.45', 24);
+  }
+
+  function recalculateSubnet() {
+    if (!validateIpv4(currentIp)) return;
+
+    const prefix = currentPrefix;
+    const ipLong = ipToLong(currentIp);
+    const maskLong = prefix === 0 ? 0 : (~0 << (32 - prefix)) >>> 0;
+    const wildcardLong = (~maskLong) >>> 0;
+    const netLong = (ipLong & maskLong) >>> 0;
+    const bcastLong = (netLong | wildcardLong) >>> 0;
+
+    let totalHosts = 0;
+    let usableHosts = 0;
+    let firstHostIp = '';
+    let lastHostIp = '';
+
+    if (prefix === 32) {
+      totalHosts = 1;
+      usableHosts = 1;
+      firstHostIp = longToIp(netLong);
+      lastHostIp = longToIp(netLong);
+    } else if (prefix === 31) {
+      totalHosts = 2;
+      usableHosts = 2; // RFC 3021
+      firstHostIp = longToIp(netLong);
+      lastHostIp = longToIp(bcastLong);
+    } else {
+      totalHosts = Math.pow(2, 32 - prefix);
+      usableHosts = Math.max(0, totalHosts - 2);
+      firstHostIp = longToIp(netLong + 1);
+      lastHostIp = longToIp(bcastLong - 1);
+    }
+
+    const netIp = longToIp(netLong);
+    const bcastIp = longToIp(bcastLong);
+    const maskIp = longToIp(maskLong);
+    const wildcardIp = longToIp(wildcardLong);
+
+    // Update Header Summary
+    document.getElementById('res-header-cidr').textContent = `${currentIp}/${prefix}`;
+    document.getElementById('badge-capacity').innerHTML = `
+      <span class="material-symbols-outlined text-[14px]">devices</span>
+      Kapasitas: ${usableHosts.toLocaleString()} Host Valid
+    `;
+
+    // Determine Class
+    const oct1 = parseInt(currentIp.split('.')[0], 10);
+    let classLabel = 'Kelas A (RFC 791)';
+    if (oct1 >= 128 && oct1 <= 191) classLabel = 'Kelas B (RFC 791)';
+    else if (oct1 >= 192 && oct1 <= 223) classLabel = 'Kelas C (RFC 1918 Private)';
+    else if (oct1 >= 224 && oct1 <= 239) classLabel = 'Kelas D (Multicast)';
+    else if (oct1 >= 240) classLabel = 'Kelas E (Eksperimental)';
+    document.getElementById('badge-class').innerHTML = `
+      <span class="material-symbols-outlined text-[14px]">category</span>
+      ${classLabel}
+    `;
+
+    // Update 32-bit Binary View
+    const octs = currentIp.split('.').map(x => parseInt(x, 10));
+    document.getElementById('oct1-dec').textContent = octs[0];
+    document.getElementById('oct2-dec').textContent = octs[1];
+    document.getElementById('oct3-dec').textContent = octs[2];
+    document.getElementById('oct4-dec').textContent = octs[3];
+
+    document.getElementById('oct1-bin').textContent = getDecToBin8(octs[0]);
+    document.getElementById('oct2-bin').textContent = getDecToBin8(octs[1]);
+    document.getElementById('oct3-bin').textContent = getDecToBin8(octs[2]);
+    document.getElementById('oct4-bin').textContent = getDecToBin8(octs[3]);
+
+    document.getElementById('net-bit-count').textContent = prefix;
+    document.getElementById('host-bit-count').textContent = 32 - prefix;
+
+    const maskOcts = maskIp.split('.').map(x => parseInt(x, 10));
+    document.getElementById('mask-bin-repr').textContent = maskOcts.map(getDecToBin8).join('.');
+
+    const networkPercent = (prefix / 32) * 100;
+    document.getElementById('mask-bar-network').style.width = networkPercent + '%';
+    document.getElementById('mask-bar-host').style.width = (100 - networkPercent) + '%';
+
+    // Metrics cards
+    document.getElementById('res-network-id').textContent = netIp;
+    document.getElementById('res-host-range').textContent = prefix >= 31 ? `${firstHostIp} - ${lastHostIp}` : `${firstHostIp} - ${lastHostIp}`;
+    document.getElementById('res-broadcast').textContent = bcastIp;
+    document.getElementById('res-mask').textContent = maskIp;
+    document.getElementById('res-wildcard').textContent = wildcardIp;
+    document.getElementById('res-total-hosts').textContent = `${usableHosts.toLocaleString()} Host`;
+  }
+
+  function copyCardValue(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const text = el.textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`Tersalin: ${text}`);
+    });
+  }
+
+  function copyFullReport() {
+    const cidr = document.getElementById('res-header-cidr').textContent;
+    const net = document.getElementById('res-network-id').textContent;
+    const range = document.getElementById('res-host-range').textContent;
+    const bcast = document.getElementById('res-broadcast').textContent;
+    const mask = document.getElementById('res-mask').textContent;
+    const wc = document.getElementById('res-wildcard').textContent;
+    const report = `[SubnetCraft Edu Ringkasan Lab]\nCIDR: ${cidr}\nNetwork ID: ${net}\nUsable Range: ${range}\nBroadcast: ${bcast}\nSubnet Mask: ${mask}\nWildcard: ${wc}`;
+    navigator.clipboard.writeText(report).then(() => {
+      showToast('Seluruh parameter kalkulasi berhasil disalin!');
+    });
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast-notify');
+    const toastMsg = document.getElementById('toast-msg');
+    toastMsg.textContent = msg;
+    toast.classList.remove('translate-y-24', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    setTimeout(() => {
+      toast.classList.add('translate-y-24', 'opacity-0');
+      toast.classList.remove('translate-y-0', 'opacity-100');
+    }, 2800);
+  }
+
+  function switchPedagogicalState(state) {
+    const successPanel = document.getElementById('panel-success-view');
+    const emptyPanel = document.getElementById('panel-empty-view');
+    const errorPanel = document.getElementById('panel-error-view');
+
+    const btnSuccess = document.getElementById('btn-state-success');
+    const btnEmpty = document.getElementById('btn-state-empty');
+    const btnError = document.getElementById('btn-state-error');
+
+    [btnSuccess, btnEmpty, btnError].forEach(btn => {
+      btn.className = "px-3 py-1.5 rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all flex items-center gap-1";
+    });
+
+    successPanel.classList.add('hidden');
+    emptyPanel.classList.add('hidden');
+    emptyPanel.classList.remove('flex');
+    errorPanel.classList.add('hidden');
+    errorPanel.classList.remove('flex');
+
+    hideErrorAlert();
+
+    if (state === 'success') {
+      btnSuccess.className = "px-3 py-1.5 rounded-md font-label-md text-label-md font-semibold bg-surface-container-lowest text-primary shadow-sm transition-all flex items-center gap-1";
+      successPanel.classList.remove('hidden');
+      document.getElementById('input-ip').value = currentIp || '192.168.10.45';
+      recalculateSubnet();
+    } else if (state === 'empty') {
+      btnEmpty.className = "px-3 py-1.5 rounded-md font-label-md text-label-md font-semibold bg-surface-container-lowest text-on-surface shadow-sm transition-all flex items-center gap-1";
+      emptyPanel.classList.remove('hidden');
+      emptyPanel.classList.add('flex');
+    } else if (state === 'error') {
+      btnError.className = "px-3 py-1.5 rounded-md font-label-md text-label-md font-semibold bg-surface-container-lowest text-tertiary shadow-sm transition-all flex items-center gap-1";
+      errorPanel.classList.remove('hidden');
+      errorPanel.classList.add('flex');
+      document.getElementById('input-ip').value = "192.168.312.45";
+      showErrorAlert('Oktet ke-3 (312) melampaui rentang valid 8-bit (0-255).');
+    }
+  }
+
+  function switchLabTab(tab) {
+    const tabCalc = document.getElementById('tab-calculator');
+    const tabVlsm = document.getElementById('tab-vlsm');
+    const viewCalc = document.getElementById('view-calculator');
+    const viewVlsm = document.getElementById('view-vlsm');
+
+    if (tab === 'calculator') {
+      tabCalc.className = "px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold bg-primary text-on-primary shadow-sm flex items-center gap-2 transition-all";
+      tabVlsm.className = "px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-2";
+      viewCalc.classList.remove('hidden');
+      viewVlsm.classList.add('hidden');
+      viewVlsm.classList.remove('flex');
+    } else {
+      tabVlsm.className = "px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold bg-primary text-on-primary shadow-sm flex items-center gap-2 transition-all";
+      tabCalc.className = "px-6 py-2.5 rounded-lg font-label-lg text-label-lg font-semibold text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all flex items-center gap-2";
+      viewCalc.classList.add('hidden');
+      viewVlsm.classList.remove('hidden');
+      viewVlsm.classList.add('flex');
+    }
+  }
+
+  function addVlsmRow() {
+    showToast('Form penambahan subnet baru dibuka.');
+  }
+
+  function recalculateVlsm() {
+    showToast('Tabel VLSM berhasil dioptimasi (Metode Descending Host).');
+  }
+
+  // Keyboard shortcut Enter
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const activeEl = document.activeElement;
+      if (activeEl && activeEl.id === 'input-ip') {
+        recalculateSubnet();
+      }
+    }
+  });
+
+  // Initial Calculation Run
+  recalculateSubnet();
+</script></div></main><footer class="w-full bg-surface-container-lowest shadow-[0_-1px_8px_rgba(0,0,0,0.02)] mt-auto"><div class="max-w-[1440px] mx-auto px-gutter py-space-lg flex flex-col md:flex-row items-center justify-between gap-space-md font-body-sm text-body-sm text-on-surface-variant"><div>© 2025 SubnetCraft Edu. Certified Vocational Networking Curriculum Standard RFC 1878 &amp; IEEE 802.3 Compliant.</div><div class="flex items-center gap-space-lg"><span class="flex items-center gap-space-xs font-code-md text-code-md text-secondary"><span class="w-2 h-2 rounded-full bg-secondary inline-block"></span>Router Simulator Engine v2.4</span><a class="hover:text-primary transition-colors" href="#">Keyboard Shortcuts</a><a class="hover:text-primary transition-colors" href="#">Help Center</a><a class="hover:text-primary transition-colors" href="#">Export Syllabus</a></div></div></footer></body></html>

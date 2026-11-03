@@ -1,0 +1,17 @@
+# Virtual environments
+.venv/
+venv/
+
+# Bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+.env.*
